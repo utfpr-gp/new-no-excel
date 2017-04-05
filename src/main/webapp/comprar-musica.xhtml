@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="./WEB-INF/template.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:jsf="http://xmlns.jcp.org/jsf"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:define name="content">
+        <h1>Compra de Composições</h1>
+
+        <h:form id="buy-form">            
+            <div class="row">
+                <div class="input-field col s12">
+                    <f:ajax event="change" listener="#{musicBuyBean.listCurrentComposerMusic()}" execute="@this">
+                        <h:selectOneMenu id="music-composer-select" value="#{musicBuyBean.composerIdSelected}" >                         
+                            <f:selectItem itemValue="" itemLabel="Selecione um Compositor"></f:selectItem>
+                            <f:selectItems var="composer" value="#{composerBean.findAll()}" itemValue="#{composer.id}" itemLabel="#{composer.name}"/>
+                        </h:selectOneMenu>                    
+                    </f:ajax>
+                    <label for="music-composer-select" class="active">Compositor</label>
+
+                </div>
+            </div>                    
+            <div class="row">
+                <div class="input-field col s12">                    
+                    <h:selectOneMenu id="music-name-select" value="#{musicBuyBean.musicIdSelected}">
+                        <f:selectItem itemValue="" itemLabel="Selecione uma música"/>  
+                        <f:selectItems var="music" value="#{musicBuyBean.musicList}" itemValue="#{music.id}" itemLabel="#{music.name}"/>                         
+                    </h:selectOneMenu>
+                    <label for="music-name-select" class="active">Música</label>
+                </div>
+            </div> 
+            <div class="row">
+                <div class="input-field col s12">
+                    <h:selectOneMenu id="artist-name-select" value="#{musicBuyBean.artistIdSelected}">
+                        <f:selectItem itemValue="1" itemLabel="Selecione um artista"/>                         
+                    </h:selectOneMenu>
+                    <label for="artist-name-select" class="active">Artista Comprador</label>
+                </div>
+            </div>                        
+            <div class="row">
+                <h:commandLink action="#{musicBuyBean.doAction()}" class="waves-effect waves-light btn red darken-3" value="Comprar"></h:commandLink>
+            </div>                    
+        </h:form>
+    </ui:define>    
+</ui:composition>

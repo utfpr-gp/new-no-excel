@@ -1,0 +1,79 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="./WEB-INF/template.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:jsf="http://xmlns.jcp.org/jsf"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:define name="content">
+        <h1>Artista</h1>
+        <h:form>
+            <div class="row">
+                <div class="input-field col s12">
+                    <input id="artist-name" type="text" jsf:value="#{artistBean.artist.name}"/>
+                    <label for="artist-name" class="active">Nome</label>
+                </div>
+            </div>                    
+            <div class="row">
+                <div class="input-field col s12">
+                    <input id="artist-band" type="text" jsf:value="#{artistBean.artist.band}"/>
+                    <label for="artist-band" class="active">Banda</label>
+                </div>
+            </div>                    
+            <div class="row">
+                <div class="input-field col s12">
+                    <p:inputNumber id="artist-balance" 
+                                   decimalSeparator="," thousandSeparator="." value="#{artistBean.artist.balance}">  
+                        <f:converter converterId="javax.faces.BigDecimal"></f:converter>
+                    </p:inputNumber>  
+                    <label for="artist-balance" class="active">Saldo</label>
+                </div>
+            </div>                    
+            <div class="row">
+                <h:commandLink action="#{artistBean.persist()}" class="waves-effect waves-light btn red darken-3" value="Salvar"></h:commandLink>
+            </div>     
+            <div class="row">
+                <div class="col s12">
+                    <p:dataTable var="artist" paginator="true" rows="5" value="#{artistBean.findAll()}">
+                        <p:column headerText="Id" priority="4">
+                            <h:outputText  value="#{artist.id}"/>
+                        </p:column>
+
+                        <p:column headerText="Nome">
+                            <h:outputText value="#{artist.name}" />
+                        </p:column>
+
+                        <p:column headerText="Banda" priority="2">
+                            <h:outputText  value="#{artist.band}"/>
+                        </p:column>
+
+                        <p:column headerText="Saldo">
+                            <h:outputFormat value="#{artist.balance}" >
+                                <f:convertNumber type="currency" currencySymbol="R$"></f:convertNumber>
+                            </h:outputFormat>
+                        </p:column>
+
+                        <p:column headerText="">
+                            <div class="row center">
+                                <div class="col s6 ">
+                                    <h:commandLink action="#{artistBean.edit(artist)}" class="waves-effect waves-light btn blue darken-3 white-text">
+                                        <i class="material-icons">mode_edit</i>
+                                    </h:commandLink>                                    
+                                </div>
+                                <div class="col s6">                                    
+                                    <h:commandLink action="#{artistBean.delete(artist)}" class="waves-effect waves-light btn red darken-3 white-text">
+                                        <i class="material-icons">delete_forever</i>
+                                    </h:commandLink>
+                                </div>
+                            </div>
+                        </p:column>
+                    </p:dataTable>
+                </div>
+            </div>
+        </h:form>
+    </ui:define>
+
+</ui:composition>
