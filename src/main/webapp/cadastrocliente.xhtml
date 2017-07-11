@@ -1,0 +1,83 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:jsf="http://xmlns.jcp.org/jsf"
+                template="./WEB-INF/template.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <h:outputStylesheet library="styles" name="common.css"></h:outputStylesheet>
+    </h:head>
+    <ui:define name="content">
+        <h1>Cadastro de CLiente</h1>
+        <h:form>
+            <div class="row">
+                <div class="input-field col s12">
+                    <label for="client-email" class="active">Selecione o seu vinculo com a UTFPR:</label>
+                </div>
+            </div>
+            <p:selectOneRadio id="console"
+                              value="#{examinationFormBean.radioVal}"
+                              required="true" label="Action">
+                <f:selectItem itemLabel="Aluno ou Professor" itemValue="student" />
+                <f:selectItem itemLabel="Visitante, Servidor ou outros"
+                              itemValue="visitor" />
+                <p:ajax process="console"
+                        update="@form" />
+            </p:selectOneRadio>
+
+
+
+
+            <div class="row" >
+                <div class="input-field col s12">
+                    <h:outputLabel value="Cpf:"
+                                   rendered="#{examinationFormBean.radioVal eq 'visitor'}">
+                    </h:outputLabel>
+                    <h:inputText id="compid"
+                                 value="#{examinationFormBean.comment}"
+                                 rendered="#{examinationFormBean.radioVal eq 'visitor'}"/>
+                    <h:outputLabel value="Ra:"
+                                   rendered="#{examinationFormBean.radioVal eq 'student'}">
+                    </h:outputLabel>
+                    <h:inputText id="studentid"
+                                 value="#{examinationFormBean.comment}"
+                                 rendered="#{examinationFormBean.radioVal eq 'student'}"/>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12">
+                    <input id="client-name" type="text" jsf:value=""/>
+                    <label for="client-name" class="active">Nome:</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12">
+                    <input id="client-email" type="text" jsf:value=""/>
+                    <label for="client-email" class="active">Email:</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12">
+                    <input id="client-name" type="text" jsf:value=""/>
+                    <label for="client-name" class="active">Telefone:</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12">
+                    <input id="client-password"  type="password" mask="true" jsf:value=""/>
+                    <label for="popup" class="active">Senha</label>
+                </div>
+            </div>
+            <div class="row">
+                <h:commandLink action="#{employeBean.verify()}" class="waves-effect waves-light btn red darken-3" value="Salvar" ></h:commandLink>
+            </div>
+            <p:defaultCommand target="save" />
+            <h:commandButton id="save" action="#{employeBean.verify()}" class="waves-effect waves-light btn red darken-3" value="Save" style="display:none;" />
+        </h:form>
+
+    </ui:define>
+
+</ui:composition>
