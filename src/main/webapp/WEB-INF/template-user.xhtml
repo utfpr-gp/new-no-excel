@@ -9,10 +9,11 @@
     <h:head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
-        <link rel="icon" type="image/png" href="favicon.png" />
+        <h:outputLink rel="icon" type="image/png" value="favicon.png"></h:outputLink>
+        <link rel="icon" type="image/png" href="/favicon.png" />
 
         <!-- CSS -->
-        <link rel="stylesheet" href="./../resources/styles/cssLayout.css"></link>
+        <link rel="stylesheet" href="/resources/styles/cssLayout.css"></link>
         <h:outputStylesheet library="styles" name="materialize.css"></h:outputStylesheet>
         <h:outputStylesheet library="styles" name="common.css"></h:outputStylesheet>
         <h:outputStylesheet library="styles" name="template.css"></h:outputStylesheet>
@@ -30,32 +31,29 @@
                     <div class="nav-wrapper green">
                         <div class="container">
                             <a class="brand-logo" href="index.jsf">
-                                <img class="utf-logo" src="./../resources/images/img-noexcel.png"></img>
+                                <h:graphicImage library="images" name="utfpr.png" class="utf-logo"></h:graphicImage>
                             </a>
                             <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
                             <ul class="right hide-on-med-and-down">
-                                <li><a href="artista.jsf" >Inicio</a></li>
-                                <li><a href="compositor.jsf">Cadastro de Funcionario</a></li>
-                                <li><a href="comprar-musica.jsf" >Gerenciamento de Refeição</a></li>
-                                <li>
-                                    <h:form>
-                                        <h:commandLink action="#{loginBean.logoutB()}" value="Logout"></h:commandLink>
-                                    </h:form>
-                                 </li>
+                               <li><a href="consultar.jsf">Consultar Conta</a></li>
+                                <li><a href="atualizar.jsf">Atualizar Informacoes</a></li>
+                                 <li>
+                                <h:form>
+                                    <h:commandLink action="#{loginBean.logoutB()}" value="Logout"></h:commandLink>
+                                </h:form>
+                            </li>
                             </ul>
                             <ul class="side-nav white" id="mobile-demo">
                                 <div class="row">
                                     <div class="col s8 offset-s2">
                                         <div class="center">
-                                            <img class="responsive-img utf-logo-nav" src="./../resources/images/img-noexcel.png"/>
+                                            <h:graphicImage library="images" name="utfpr.png" class="responsive-img utf-logo"></h:graphicImage>
                                         </div>
                                     </div>
                                 </div>
 
-                                <li><a href="artista.jsf" >Inicio</a></li>
-                                <li><a href="compositor.jsf">Cadastro de Funcionario</a></li>
-                                <li><a href="comprar-musica.jsf" >Gerenciamento de Refeição</a></li>
-                                <li><a href="#{logout.logout()}">Logout</a></li>
+                                <li><a href="consultar.jsf">Consultar Conta</a></li>
+                                <li><a href="atualizar.jsf">Atualizar Informacoes</a></li>
                             </ul>
                         </div>
                     </div>
@@ -75,7 +73,7 @@
                 <div class="row">
                     <div class="col s12 center">
                         <a href="http://www.utfpr.edu.br/guarapuava">
-                            <img src="./../resources/images/utfpr.png" id="utfpr-footer" class=" img-responsive" height="70px"/>
+                            <h:graphicImage library="images" name="utfpr.png" id="utfpr-footer" class=" img-responsive" height="70px"></h:graphicImage>
                         </a>
                     </div>
                 </div>
@@ -92,7 +90,7 @@
         <!-- Para evitar conflito com o jQuery, é preciso referenciar a própria versão do jQuery que vem no PrimeFaces -->
         <h:outputScript library="primefaces" name="jquery/jquery.js" target="head" />
         <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js"></script>
-        <script src="./../resources/scripts/common.js"></script>
+        <!--<h:outputScript library="scripts" name="common.js"></h:outputScript> -->
     </h:body>
 
 </html>

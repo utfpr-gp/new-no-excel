@@ -5,8 +5,6 @@
  */
 package br.edu.utfpr.model;
 
-import br.edu.utfpr.security.EmployeBeanSecurity;
-import br.edu.utfpr.security.EmployeSecurity;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
