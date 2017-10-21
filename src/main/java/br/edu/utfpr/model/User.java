@@ -7,11 +7,20 @@ package br.edu.utfpr.model;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Calendar;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.TimeZone;
+import javax.faces.component.UIComponent;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+import org.hibernate.validator.constraints.Email;
 
 /**
  *
@@ -25,6 +34,9 @@ public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @ManyToMany
+    private Set<UserRole> roles;
 
     public String getComment() {
         return comment;
@@ -41,13 +53,36 @@ public class User implements Serializable {
     public void setRadioVal(String radioVal) {
         this.radioVal = radioVal;
     }
+    Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
 
+    long time = cal.getTimeInMillis();
+
+    public long getTime() {
+        return time;
+    }
+
+    public void setTime(long time) {
+        this.time = time;
+    }
     private String comment;
     private String radioVal;
-    private String name;
+    public String name;
+    @Email(message = "Email precisa ser valido")
     private String email;
+    @Pattern(regexp = "^((([0-9]{2}[\\.]?[0-9]{3}[\\.]?[0-9]{3}[\\/]?[0-9]{4}[-]?[0-9]{2})|([0-9]{3}[\\.]?[0-9]{3}[\\.]?[0-9]{3}[-]?[0-9]{2}))|(\\d{8,8}))$", message = "Login incorreto informe somente numeros")
     private String login;
+    @Size(min = 6, message = "Senha deve conter no minimo 6 digitos")
+    @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{6,}$", message = "A senha deve conter no minimo uma letra e um numero")
     private String password;
+
+    public boolean isCheckuser() {
+        return checkuser;
+    }
+
+    public void setCheckuser(boolean checkuser) {
+        this.checkuser = checkuser;
+    }
+    private boolean checkuser;
 
     public BigDecimal getBalance() {
         return balance;
@@ -57,22 +92,22 @@ public class User implements Serializable {
         this.balance = balance;
     }
     private BigDecimal balance;
- 
 
     public User() {
         super();
+        this.roles = new HashSet<>();
     }
 
-    public User(String name, String email, String login, String password, BigDecimal balance) {
+    public User(String name, String email, String login, String password, BigDecimal balance, boolean checkuser, long time) {
         super();
         this.name = name;
         this.email = email;
         this.login = login;
         this.password = password;
-        this.balance = new BigDecimal ("0.00");
+        this.balance = new BigDecimal("0.00");
+        this.time = time;
+        this.roles = new HashSet<>();
     }
-
-
 
     public String getName() {
         return name;
@@ -106,13 +141,20 @@ public class User implements Serializable {
         this.password = password;
     }
 
-
     public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Set<UserRole> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<UserRole> roles) {
+        this.roles = roles;
     }
 
 }

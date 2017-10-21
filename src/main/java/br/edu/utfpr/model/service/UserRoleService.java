@@ -7,6 +7,7 @@ package br.edu.utfpr.model.service;
 
 import br.edu.utfpr.model.UserRole;
 import br.edu.utfpr.model.dao.UserRoleDAO;
+import java.util.List;
 
 /**
  *
@@ -16,6 +17,11 @@ public class UserRoleService extends AbstractService<Long, UserRole> {
 
     public UserRoleService() {
         dao = new UserRoleDAO();
+    }
+
+    public List<UserRole> listPendents() {
+        //tratar transaçoes
+        return dao.listPendents();
     }
 
 }

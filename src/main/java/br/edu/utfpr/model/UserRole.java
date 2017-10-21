@@ -6,6 +6,7 @@
 package br.edu.utfpr.model;
 
 import java.io.Serializable;
+import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -23,6 +24,11 @@ import javax.persistence.Table;
 public class UserRole implements Serializable {
 
     private static final long serialVersionUID = 1L;
+
+    public static String USER = "USER";
+    public static String USER_PENDING = "PENDING-USER";
+    public static String ADMIN = "ADMIN";
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

@@ -10,6 +10,7 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletException;
@@ -21,7 +22,7 @@ import javax.servlet.http.HttpSession;
  * @author cabrito
  */
 @ManagedBean
-@ViewScoped
+@SessionScoped
 public class LoginBean implements Serializable {
 
     private static final String PAGINA_INDEX = "/view/ocorrencias/inicio.xhtml";
@@ -48,16 +49,18 @@ public class LoginBean implements Serializable {
     public String onClickLogar() {
         FacesContext fc = FacesContext.getCurrentInstance();
         HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
-
+        boolean isloggedin = false;
         try {
             HttpServletRequest request = (HttpServletRequest) FacesContext.
                     getCurrentInstance().getExternalContext().getRequest();
 
             request.login(this.usuario, this.senha);
-            if (request.isUserInRole("ADMIN")){
-                return "admin/menu?faces-redirect=true";
-            } 
-                
+            if (request.isUserInRole("PENDING-USER")) {
+                session.setAttribute("loggedIn", true);
+                return "pending-user/page?faces-redirect=true";
+
+            }
+
             return "user/conta?faces-redirect=true";
         } catch (ServletException e) {
             System.out.println(e);

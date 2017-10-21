@@ -1,53 +1,111 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
                 xmlns:jsf="http://xmlns.jcp.org/jsf"
-                template="/WEB-INF/template.xhtml"
-                xmlns:p="http://primefaces.org/ui"
-                xmlns:f="http://xmlns.jcp.org/jsf/core"
-                xmlns = "http://www.w3.org/1999/xhtml"
-                xmlns:pretty="http://ocpsoft.com/prettyfaces">
+                xmlns:f="http://java.sun.com/jsf/core"
+                template="WEB-INF/template.xhtml"
+                xmlns:p="http://primefaces.org/ui">
 
     <ui:define name="content">
-        <p:messages></p:messages>
-        <div class="container">
-            <div class="row z-depth-4 card-panel">
+        <h:head>
+            <title>Material Loin</title>
+            <h:head>
+                <title>Material Loin</title>
+                <!-- Compiled and minified CSS -->
+                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.1/css/materialize.min.css"/>
+                <h:outputStylesheet name="common.css" library="styles" />
+                <!-- Compiled and minified JavaScript -->
+                <h:outputScript library="primefaces" name="jquery/jquery.js" target="head" />
+            </h:head>
+        </h:head>
+        <h:body styleClass="cyan-lighten-5">
+            <h1>Logar no Sistema</h1>
+            <div class="valign-wrapper" >
 
-                <h:form id="form" class="col s6 center center-fix">
-                    <h4>Acesso ao sistema</h4>
-                    <div class="row">
-                        <div class="input-field">
-                            <h:outputLabel value="Identificacao" for="inputUsuario" />
-                            <h:inputText id="inputUsuario" required="true" value="#{loginBean.usuario}" />
+                <div class="container">
+                    <div class="center-align">
+                        <div class="valign-wrapper " >
+
+                            <div class="container">
+                                <div class="col s6 offset-3 "  >
+                                    <div class="card">
+                                        <div class="card-content">
+                                            <img class="responsive-img" style="max-width: 94px;" src="resources/images/no-excel.png" />
+                                            <div class="left-align" >
+
+                                                <h:form id="login-fom"  prependId="false" >
+
+                                                    <div class="row">
+                                                        <div class="input-field col s12">
+                                                            <label for="client-email" class="active" style="font-size: 20px; color:black; font-family:Arial, Helvetica, sans-serif; padding-top: 5%; font-weight: bold;" >Selecione o seu vinculo com a UTFPR:</label>
+                                                        </div>
+                                                        <div  style="padding-top: 5%;" >
+                                                            <h:panelGrid columns="2" columnClasses="cellGridFormLabel,none,cellGridFormLabel,none">
+
+                                                                <p:selectOneRadio id="console"
+                                                                                  value="#{examinationFormBean.radioVal}"
+                                                                                  label="Action">
+                                                                    <f:selectItem   itemLabel="Aluno ou Professor" itemValue="student" id="student"  />
+
+                                                                    <f:selectItem itemLabel="Visitante" id="visitor"
+                                                                                  itemValue="visitor" />
+                                                                    <p:ajax process="console"
+                                                                            update="@form" />
+                                                                </p:selectOneRadio>
+                                                            </h:panelGrid>
+
+                                                        </div>
+                                                        <div class="input-field col s11" id="combo">
+                                                            <p:inputText id="compid"  label="cpf"  size="40" class="default-input" required="true" onfocus="$(this).attr('placeholder', '');" onblur="$(this).attr('placeholder', 'CPF');"
+                                                                         requiredMessage="Campo CPF e obrigatorio" title="Informe o CPF, somente numeros"
+                                                                         validatorMessage="Campo CPF e obrigatorio"
+                                                                         value="#{loginBean.usuario}"
+                                                                         rendered="#{examinationFormBean.radioVal eq 'visitor'}"/>
+                                                            <p:tooltip id="tool1" for="compid" showEvent="focus" hideEvent="blur" />
+                                                            <p:watermark for="compid" value="CPF" />
+
+
+                                                            <p:inputText id="studentid" label="ra" size="40" class="default-input" required="true" onfocus="$(this).attr('placeholder', '');"
+                                                                         requiredMessage="Campo RA e obrigatorio" title="Informe o seu RA, somente digitos" onblur="$(this).attr('placeholder', 'RA');"
+
+                                                                         value="#{loginBean.usuario}"
+                                                                         rendered="#{examinationFormBean.radioVal eq 'student'}"/>
+                                                            <p:tooltip id="tool2" for="studentid" showEvent="focus" hideEvent="blur" />
+                                                            <p:watermark for="studentid" value="RA " />
+                                                            <!--<p:messages for="studentid"  closable="true" autoUpdate="true" /> -->
+                                                        </div>
+                                                        <dv class="s1">
+                                                            <img class="responsive-img" id="error-id" style="max-width: 35px; padding-top: 20px; padding-left: 10px; display: none" src="resources/images/error.png" />
+                                                        </dv>
+                                                        <div class="col s1">
+                                                            <img class="responsive-img" id="ok-id" style="max-width: 24px; padding-top: 20px; display: none" src="resources/images/ok.jpg" />
+                                                        </div>
+                                                        <div class="col s11 input-field">
+                                                            <p:password  id="repass" required="true" class="default-input" title="Informe a Senha"  placeholder="Repita a Senha" value="#{loginBean.senha}"  requiredMessage="Campo repitir senha e obrigatorio" onfocus="$(this).attr('placeholder', '');" onblur="$(this).attr('placeholder', 'Repita a Senha');"  />
+                                                            <p:tooltip id="tool6" for="repass" showEvent="focus" hideEvent="blur"  />
+
+                                                        </div>
+                                                        <div class="col s11 button center">
+                                                            <p:commandButton id="btEntrar" value="Entrar" ajax="false"
+                                                                             action="#{loginBean.onClickLogar()}"
+                                                                             class="btn green"/>
+                                                        </div>
+                                                    </div>
+                                                </h:form>
+
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-
-                    <div class="row">
-                        <div class="input-field">
-                            <h:outputLabel value="Senha" for="inputSenha" />
-                            <h:inputSecret id="inputSenha" required="true" value="#{loginBean.senha}" />
-                        </div>
-                    </div>
-
-                    <p:commandButton id="btEntrar" value="Entrar" ajax="false"
-                                     action="#{loginBean.onClickLogar()}"
-                                     class="btn margin-fix"/>
-
-                </h:form>
-                <div class="row col s6 center-align center-fix">
-                    <br/>
-                    <!--<pretty:link mappingId="sign-up" class="center">
-                        Não possui conta? Cadastre-se
-                    </pretty:link> -->
-                    <h:outputLink  value="http://localhost:8080/new-no-excel/usuarios-cadastro.xhtml">Não possui conta? Cadastre-se</h:outputLink>
                 </div>
-
             </div>
-        </div>
+
+        </h:body>
+        <!-- intro -->
     </ui:define>
-
 </ui:composition>
-
-
-

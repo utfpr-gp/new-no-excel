@@ -5,7 +5,10 @@
         <param-name>javax.faces.PROJECT_STAGE</param-name>
         <param-value>Development</param-value>
     </context-param>
-
+    <listener>
+        <description>ServletContextListener</description>
+        <listener-class>br.edu.utfpr.jobs.QuartzListener</listener-class>
+    </listener>
     <servlet>
         <servlet-name>Faces Servlet</servlet-name>
         <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
@@ -31,7 +34,6 @@
             <form-error-page>/view/errors/login-error.jsf</form-error-page>
         </form-login-config>
     </login-config>
-
     <security-role>
         <role-name>ADM</role-name>
     </security-role>
@@ -41,7 +43,6 @@
     <security-role>
         <role-name>PENDING-USER</role-name>
     </security-role>
-
     <security-constraint>
         <display-name>Segurança para o diretório de usuarios</display-name>
         <web-resource-collection>
@@ -62,8 +63,6 @@
             <role-name>USER</role-name>
         </auth-constraint>
     </security-constraint>
-
-
     <security-constraint>
         <display-name>Segurança para o diretório de usuarios</display-name>
         <web-resource-collection>
@@ -74,7 +73,6 @@
             <role-name>ADMIN</role-name>
         </auth-constraint>
     </security-constraint>
-
     <security-constraint>
         <display-name>Segurança para diretórios</display-name>
         <web-resource-collection>
@@ -92,5 +90,4 @@
             org.quartz.ee.servlet.QuartzInitializerListener
         </listener-class>
     </listener>
-
 </web-app>

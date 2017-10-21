@@ -1,11 +1,14 @@
 package br.edu.utfpr.model.dao;
 
+import br.edu.utfpr.model.User;
+import br.edu.utfpr.model.UserRole;
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import br.edu.utfpr.util.JPAUtil;
+import javax.persistence.TypedQuery;
 
 @SuppressWarnings("unchecked")
 public class AbstractDAO<PK, T> {
@@ -69,7 +72,7 @@ public class AbstractDAO<PK, T> {
     public void delete(T entity) {
         this.entityManager = JPAUtil.getEntityManager();
         //verifica se a entidade está gerenciada, se não estiver, recupera ela do BD
-        entityManager.remove(entityManager.contains(entity) ? entity : entityManager.merge(entity));         
+        entityManager.remove(entityManager.contains(entity) ? entity : entityManager.merge(entity));
     }
 
     public List<T> findAll() {
@@ -77,7 +80,7 @@ public class AbstractDAO<PK, T> {
         return entityManager.createQuery(("FROM " + getTypeClass().getName()))
                 .getResultList();
     }
-    
+
     public List<T> listByProperty(String propertyName, String propertyValue) {
         this.entityManager = JPAUtil.getEntityManager();
 
@@ -87,10 +90,10 @@ public class AbstractDAO<PK, T> {
         query.setParameter("param", propertyValue);
 
         List<T> queryResult = query.getResultList();
-        
+
         return queryResult;
     }
-    
+
     public List<T> listByProperty(String propertyName, Long propertyValue) {
         this.entityManager = JPAUtil.getEntityManager();
 
@@ -100,7 +103,7 @@ public class AbstractDAO<PK, T> {
         query.setParameter("param", propertyValue);
 
         List<T> queryResult = query.getResultList();
-        
+
         return queryResult;
     }
 
@@ -108,5 +111,17 @@ public class AbstractDAO<PK, T> {
         Class<?> clazz = (Class<?>) ((ParameterizedType) this.getClass().
                 getGenericSuperclass()).getActualTypeArguments()[1];
         return clazz;
+    }
+
+    public List<UserRole> listPendents() {
+        this.entityManager = JPAUtil.getEntityManager();
+        String queryString = "SELECT o FROM UserRole " + " o where o.role" + " = :param";
+
+        Query query = entityManager.createQuery(queryString);
+        query.setParameter("param", "PENDING-USER");
+
+        List<UserRole> queryResult = query.getResultList();
+
+        return queryResult;
     }
 }

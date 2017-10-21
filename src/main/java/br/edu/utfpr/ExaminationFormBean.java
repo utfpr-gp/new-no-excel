@@ -19,7 +19,7 @@ import javax.faces.bean.ViewScoped;
 public class ExaminationFormBean implements Serializable {
 
     private String comment;
-    private String radioVal;
+    private String radioVal = "student";
     private boolean showMap;
 
     public boolean isShowMap() {

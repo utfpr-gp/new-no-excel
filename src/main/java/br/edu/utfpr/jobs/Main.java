@@ -19,7 +19,9 @@ public class Main {
         MyTask mTask = new MyTask();
         // This task is scheduled to run every 10 seconds
 
-        t.scheduleAtFixedRate(mTask, 0, 86400000);
+        t.scheduleAtFixedRate(mTask, 0, 12000);
+        t.scheduleAtFixedRate(mTask, 0, 6000);
+
     }
 
 }

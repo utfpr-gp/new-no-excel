@@ -6,19 +6,30 @@
 package br.edu.utfpr;
 
 import br.edu.utfpr.model.User;
-
+import br.edu.utfpr.model.UserRole;
+import br.edu.utfpr.model.dao.UserDAO;
+import br.edu.utfpr.model.service.UserRoleService;
+import java.util.Calendar;
 import br.edu.utfpr.model.service.UserService;
+import static br.edu.utfpr.util.JPAUtil.getEntityManager;
 import br.edu.utfpr.util.MessageUtil;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TimeZone;
 import javax.annotation.PostConstruct;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceUnit;
+import javax.persistence.TypedQuery;
 
 /**
  *
@@ -26,23 +37,18 @@ import javax.faces.bean.RequestScoped;
  */
 @ManagedBean
 @RequestScoped
+@PersistenceUnit
 public class UserBean {
 
     private User user;
     private List<User> userList;
     private UserService userService;
+    private UserRoleService userRoleService;
     private Long cityId;
 
-    @ManagedProperty(value = "#{userRoleBean}")
-    private UserRoleBean userRoleBean;
-
+//    @ManagedProperty(value = "#{userRoleBean}")
+//    private UserRoleBean userRoleBean;
     public UserBean() {
-    }
-
-    public UserBean(User user, List<User> userList, UserService userService) {
-        this.user = user;
-        this.userList = userList;
-        this.userService = userService;
     }
 
     @PostConstruct
@@ -50,6 +56,7 @@ public class UserBean {
         user = new User();
         userList = new ArrayList<>();
         userService = new UserService();
+        userRoleService = new UserRoleService();
     }
 
     public User getUser() {
@@ -84,14 +91,6 @@ public class UserBean {
         this.cityId = cityId;
     }
 
-    public UserRoleBean getUserRoleBean() {
-        return userRoleBean;
-    }
-
-    public void setUserRoleBean(UserRoleBean userRoleBean) {
-        this.userRoleBean = userRoleBean;
-    }
-
     public void edit(User user) {
         this.user = user;
     }
@@ -108,14 +107,27 @@ public class UserBean {
     }
 
     public void persist() {
-        if (user.getId() == null) {
+
+        Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+        System.out.println("TIMEEEE");
+
+        System.out.println("PASSOUAQUI");
+        long time = cal.getTimeInMillis();
+        System.out.println("PASSOU");
+        if (userService.getByProperty("email", user.getEmail()) != null) {
+            MessageUtil.showMessage("Erro ao cadastrar, email ja informado", "", FacesMessage.SEVERITY_ERROR);
+        } else if (userService.getByProperty("login", user.getLogin()) != null) {
+            MessageUtil.showMessage("Erro ao cadastrar, cpf ja informado", "", FacesMessage.SEVERITY_ERROR);
+        } else if (user.getId() == null) {
             String passwordMd5 = gerarHashMD5(user.getPassword());
             user.setPassword(passwordMd5);
-            if (userService.save(user)) {
+            UserRole userRole = new UserRole(user.getLogin(), UserRole.USER_PENDING);
+            //user.getRoles().add(userRole);
+            user.setTime(time);
+
+            //TODO Cadastrar o user e role em apenas uma transaçao - criar um novo método save em algum service
+            if (userService.save(user) && userRoleService.save(userRole)) {
                 System.out.println("Ate aqui chegou");
-                userRoleBean.getUserRole().setLogin(user.getLogin());
-                userRoleBean.getUserRole().setRole("PENDING-USER");
-                userRoleBean.persist();
                 MessageUtil.showMessage("Cadastrado com sucesso", "", FacesMessage.SEVERITY_INFO);
             } else {
                 MessageUtil.showMessage("Falha ao cadastrar", "", FacesMessage.SEVERITY_ERROR);
@@ -126,13 +138,16 @@ public class UserBean {
             } else {
                 MessageUtil.showMessage("Falha na alteração", "", FacesMessage.SEVERITY_ERROR);
             }
+
         }
         //tirei o this abaixo
         user = new User();
     }
 
     public List<User> findAll() {
+
         return userList = userService.findAll();
+
     }
 
     public String gerarHashMD5(String passwordRaw) {
